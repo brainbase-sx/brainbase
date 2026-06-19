@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainBase</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:white}
+header{text-align:center;padding:60px 20px 30px}
+h1{font-size:4rem;margin:0 0 10px}
+.subtitle{color:#cbd5e1;font-size:1.2rem}
+.page{display:none;max-width:1100px;margin:auto;padding:30px}
+.page.active{display:block}
+.container{display:flex;gap:40px;justify-content:center;padding:40px;flex-wrap:wrap}
+.card{width:450px;height:300px;border-radius:25px;overflow:hidden;position:relative;cursor:pointer;transition:.3s}
+.card:hover,.tile:hover{transform:scale(1.03)}
+.english{background:url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200') center/cover}
+.history{background:url('https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1200') center/cover}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;margin-top:30px}
+.tile{background:#1e293b;border:1px solid #334155;padding:30px;border-radius:18px;text-align:center;font-size:1.4rem;cursor:pointer;transition:.2s}
+.back{background:none;color:#93c5fd;border:0;font-size:1rem;cursor:pointer;margin-bottom:20px}
+h2{font-size:2.5rem}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>BrainBase</h1>
+<div class="subtitle">Lernen. Entdecken. Spielen.</div>
+</header>
+
+<section id="home" class="page active">
+<div class="container">
+<div class="card english" onclick="showPage('english')"><div class="overlay">🇬🇧 ENGLISH</div></div>
+<div class="card history" onclick="showPage('geschichte')"><div class="overlay">🏛️ GESCHICHTE</div></div>
+</div>
+</section>
+
+<section id="english" class="page">
+<button class="back" onclick="showPage('home')">← Zurück</button>
+<h2>🇬🇧 English</h2>
+<div class="grid">
+<div class="tile">Grade 5</div>
+<div class="tile">Grade 6</div>
+<div class="tile">Grade 7</div>
+<div class="tile" onclick="showPage('english8')">Grade 8</div>
+<div class="tile">Grade 9</div>
+<div class="tile">Grade 10</div>
+</div>
+</section>
+
+<section id="geschichte" class="page">
+<button class="back" onclick="showPage('home')">← Zurück</button>
+<h2>🏛️ Geschichte</h2>
+<div class="grid">
+<div class="tile">Klasse 6</div>
+<div class="tile">Klasse 7</div>
+<div class="tile" onclick="showPage('geschichte8')">Klasse 8</div>
+<div class="tile">Klasse 9</div>
+<div class="tile">Klasse 10</div>
+</div>
+</section>
+
+<section id="english8" class="page">
+<button class="back" onclick="showPage('english')">← Zurück zu English</button>
+<h2>🇬🇧 English · Grade 8</h2>
+<div class="grid">
+<div class="tile">📚 Unit 1</div>
+<div class="tile">📚 Unit 2</div>
+<div class="tile">📚 Unit 3</div>
+<div class="tile">📚 Unit 4</div>
+<div class="tile">📚 Unit 5</div>
+<div class="tile">🌍 Across Cultures</div>
+<div class="tile">📝 Grammar Hub</div>
+<div class="tile">🎯 Vocabulary Games</div>
+<div class="tile">📋 Exam Practice</div>
+<div class="tile">🎮 Quizze & Spiele</div>
+</div>
+</section>
+
+<section id="geschichte8" class="page">
+<button class="back" onclick="showPage('geschichte')">← Zurück zu Geschichte</button>
+<h2>🏛️ Geschichte · Klasse 8</h2>
+<div class="grid">
+<div class="tile">🇫🇷 Französische Revolution</div>
+<div class="tile">👑 Napoleon</div>
+<div class="tile">🏭 Industrialisierung</div>
+<div class="tile">🇩🇪 Nationalstaat & Reichsgründung</div>
+<div class="tile">🌍 Imperialismus</div>
+<div class="tile">🎮 Quizze & Spiele</div>
+</div>
+</section>
+
+<script>
+function showPage(id){
+document.querySelectorAll('.page').forEach(page=>page.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+window.scrollTo(0,0);
+}
+</script>
+
+</body>
+</html>
