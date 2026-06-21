@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainBase Grammar Lab 001</title>
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#f8fafc;line-height:1.6}
+.wrapper{max-width:1100px;margin:auto;padding:30px}
+a{color:#93c5fd;text-decoration:none}
+.hero{background:#1e293b;border-radius:22px;padding:35px;margin:25px 0}
+.badge{display:inline-block;background:#facc15;color:#111827;padding:6px 14px;border-radius:999px;font-weight:bold}
+h1{font-size:3rem;margin:12px 0}
+.section{background:#1e293b;border-radius:18px;padding:25px;margin:25px 0}
+.card{background:#334155;padding:16px;border-radius:14px;margin:10px 0}
+button{background:#38bdf8;border:0;border-radius:10px;padding:10px 14px;margin:5px;cursor:pointer;font-weight:bold}
+button:hover{background:#7dd3fc}
+.correct{background:#14532d!important}
+.wrong{background:#7f1d1d!important}
+input{padding:10px;border-radius:8px;border:0;margin:6px;width:220px}
+.feedback{font-weight:bold;margin-top:8px}
+.score{font-size:1.4rem;background:#312e81;padding:20px;border-radius:16px;margin-top:25px}
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+
+<a href="index.html">← Back to BrainBase</a>
+
+<section class="hero">
+<span class="badge">GRAMMAR LAB 001</span>
+<h1>Mixed Tenses Challenge</h1>
+<p>Practise Simple Present, Present Progressive, Simple Past, Past Progressive and Present Perfect.</p>
+</section>
+
+<section class="section">
+<h2>Task 1: Sentence Sorting</h2>
+<p>Choose the correct tense.</p>
+<div id="sorting"></div>
+</section>
+
+<section class="section">
+<h2>Task 2: Signal Words</h2>
+<p>Choose the tense that usually matches the signal word.</p>
+<div id="signals"></div>
+</section>
+
+<section class="section">
+<h2>Task 3: Fill in the Gaps</h2>
+<p>Write the correct verb form.</p>
+<div id="gaps"></div>
+<button onclick="checkGaps()">Check gaps</button>
+</section>
+
+<section class="section">
+<h2>Task 4: Mixed Challenge</h2>
+<p>Choose the correct answer.</p>
+<div id="mc"></div>
+</section>
+
+<section class="score" id="scoreBox">
+Score: <span id="score">0</span> / 60
+</section>
+
+</div>
+
+<script>
+let score = 0;
+let answered = new Set();
+
+function addScore(id){
+ if(!answered.has(id)){score++;answered.add(id);document.getElementById("score").textContent=score;}
+}
+
+const tenses=["Simple Present","Present Progressive","Simple Past","Past Progressive","Present Perfect"];
+
+const sorting=[
+["I usually walk to school.","Simple Present"],
+["My sister plays tennis every Friday.","Simple Present"],
+["We often visit our grandparents.","Simple Present"],
+["She is doing her homework now.","Present Progressive"],
+["They are watching a film at the moment.","Present Progressive"],
+["I am talking to my friend right now.","Present Progressive"],
+["We visited London last summer.","Simple Past"],
+["He saw a bear yesterday.","Simple Past"],
+["They went shopping last weekend.","Simple Past"],
+["I was reading when the phone rang.","Past Progressive"],
+["They were playing football at 5 p.m.","Past Progressive"],
+["She was sleeping while her brother was studying.","Past Progressive"],
+["I have never been to Canada.","Present Perfect"],
+["We have already finished our project.","Present Perfect"],
+["She has lived here for five years.","Present Perfect"]
+];
+
+const signals=[
+["usually","Simple Present"],["often","Simple Present"],["every day","Simple Present"],
+["now","Present Progressive"],["at the moment","Present Progressive"],["right now","Present Progressive"],
+["yesterday","Simple Past"],["last week","Simple Past"],["in 2022","Simple Past"],
+["while","Past Progressive"],["at 7 p.m. yesterday","Past Progressive"],["when","Past Progressive"],
+["already","Present Perfect"],["just","Present Perfect"],["yet","Present Perfect"],["ever","Present Perfect"],["since","Present Perfect"],["for","Present Perfect"]
+];
+
+const gaps=[
+["I usually _____ football after school.","play"],
+["She always _____ up early.","gets"],
+["My parents _____ tea every morning.","drink"],
+["Tom often _____ his bike to school.","rides"],
+["Look! The dog _____ across the street.","is running"],
+["They _____ TV at the moment.","are watching"],
+["I _____ to my teacher right now.","am talking"],
+["Listen! Someone _____ the piano.","is playing"],
+["We _____ Toronto last year.","visited"],
+["She _____ a moose yesterday.","saw"],
+["They _____ shopping last weekend.","went"],
+["He _____ his homework two hours ago.","finished"],
+["I _____ when the phone rang.","was sleeping"],
+["They _____ football at 6 p.m. yesterday.","were playing"],
+["While she _____ home, it started to rain.","was walking"],
+["We _____ dinner when Dad came home.","were eating"],
+["I have never _____ to Canada.","been"],
+["She has already _____ her project.","finished"],
+["Have you ever _____ a bear?","seen"],
+["They have lived here _____ 2020.","since"]
+];
+
+const mc=[
+["While I _____ home, I saw an accident.",["walked","was walking","have walked"],"was walking"],
+["She _____ her homework every afternoon.",["does","is doing","did"],"does"],
+["Look! The children _____ in the garden.",["play","played","are playing"],"are playing"],
+["We _____ London two years ago.",["visited","have visited","were visiting"],"visited"],
+["I _____ never _____ sushi.",["have / eaten","did / eat","am / eating"],"have / eaten"],
+["At 8 p.m. yesterday, I _____ TV.",["watched","was watching","have watched"],"was watching"],
+["He usually _____ by bus.",["goes","is going","went"],"goes"],
+["They _____ already _____ the film.",["have / seen","did / see","were / seeing"],"have / seen"],
+["Yesterday she _____ late.",["arrived","has arrived","is arriving"],"arrived"],
+["Right now we _____ English grammar.",["practise","practised","are practising"],"are practising"]
+];
+
+function makeChoice(container,data,prefix){
+ data.forEach((item,i)=>{
+  const div=document.createElement("div");
+  div.className="card";
+  div.innerHTML="<strong>"+item[0]+"</strong><br>";
+  tenses.forEach(t=>{
+   const b=document.createElement("button");
+   b.textContent=t;
+   b.onclick=()=>{
+    if(t===item[1]){b.className="correct";addScore(prefix+i);}
+    else{b.className="wrong";}
+   };
+   div.appendChild(b);
+  });
+  container.appendChild(div);
+ });
+}
+
+function makeGaps(){
+ const c=document.getElementById("gaps");
+ gaps.forEach((g,i)=>{
+  const div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=(i+1)+". "+g[0]+" <input id='gap"+i+"'>";
+  c.appendChild(div);
+ });
+}
+
+function checkGaps(){
+ gaps.forEach((g,i)=>{
+  const input=document.getElementById("gap"+i);
+  if(input.value.trim().toLowerCase()===g[1].toLowerCase()){
+   input.style.background="#bbf7d0";addScore("gap"+i);
+  }else{
+   input.style.background="#fecaca";
+  }
+ });
+}
+
+function makeMC(){
+ const c=document.getElementById("mc");
+ mc.forEach((q,i)=>{
+  const div=document.createElement("div");
+  div.className="card";
+  div.innerHTML="<strong>"+(i+1)+". "+q[0]+"</strong><br>";
+  q[1].forEach(a=>{
+   const b=document.createElement("button");
+   b.textContent=a;
+   b.onclick=()=>{
+    if(a===q[2]){b.className="correct";addScore("mc"+i);}
+    else{b.className="wrong";}
+   };
+   div.appendChild(b);
+  });
+  c.appendChild(div);
+ });
+}
+sorting.sort(() => Math.random() - 0.5);
+signals.sort(() => Math.random() - 0.5);
+makeChoice(document.getElementById("sorting"),sorting,"sort");
+makeChoice(document.getElementById("signals"),signals,"sig");
+makeGaps();
+makeMC();
+</script>
+
+</body>
+</html>
